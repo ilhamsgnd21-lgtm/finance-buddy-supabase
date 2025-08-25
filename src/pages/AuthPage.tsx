@@ -8,7 +8,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const AuthPage = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { signIn, signUp } = useAuth();
@@ -18,7 +18,7 @@ const AuthPage = () => {
     e.preventDefault();
     setLoading(true);
     
-    const { error } = await signIn(email, password);
+    const { error } = await signIn(username, password);
     
     if (error) {
       toast({
@@ -34,7 +34,7 @@ const AuthPage = () => {
     e.preventDefault();
     setLoading(true);
     
-    const { error } = await signUp(email, password);
+    const { error } = await signUp(username, password);
     
     if (error) {
       toast({
@@ -70,13 +70,13 @@ const AuthPage = () => {
             <TabsContent value="login">
               <form onSubmit={handleSignIn} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="username">Username</Label>
                   <Input
-                    id="email"
-                    type="email"
-                    placeholder="email@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="username"
+                    type="text"
+                    placeholder="Masukkan username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     required
                   />
                 </div>
@@ -104,13 +104,13 @@ const AuthPage = () => {
             <TabsContent value="register">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="register-email">Email</Label>
+                  <Label htmlFor="register-username">Username</Label>
                   <Input
-                    id="register-email"
-                    type="email"
-                    placeholder="email@example.com"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    id="register-username"
+                    type="text"
+                    placeholder="Pilih username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     required
                   />
                 </div>

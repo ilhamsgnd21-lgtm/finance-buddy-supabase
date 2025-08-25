@@ -6,9 +6,10 @@ import { LogOut, DollarSign, TrendingDown, PiggyBank } from 'lucide-react';
 import { SalaryForm } from '@/components/SalaryForm';
 import { ExpenseForm } from '@/components/ExpenseForm';
 import { FinancialOverview } from '@/components/FinancialOverview';
+import { ChangePasswordForm } from '@/components/ChangePasswordForm';
 
 const Dashboard = () => {
-  const { signOut, user } = useAuth();
+  const { signOut, user, username } = useAuth();
 
   return (
     <div className="min-h-screen bg-background">
@@ -17,7 +18,7 @@ const Dashboard = () => {
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-foreground">Manajemen Keuangan</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm text-muted-foreground">{user?.email}</span>
+            <span className="text-sm text-muted-foreground">@{username}</span>
             <Button variant="outline" size="sm" onClick={signOut}>
               <LogOut className="w-4 h-4 mr-2" />
               Keluar
@@ -29,7 +30,7 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="dashboard" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <DollarSign className="w-4 h-4" />
               Dashboard
@@ -41,6 +42,10 @@ const Dashboard = () => {
             <TabsTrigger value="reports" className="flex items-center gap-2">
               <PiggyBank className="w-4 h-4" />
               Laporan
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="flex items-center gap-2">
+              <LogOut className="w-4 h-4" />
+              Pengaturan
             </TabsTrigger>
           </TabsList>
 
@@ -90,6 +95,10 @@ const Dashboard = () => {
                 </p>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="settings" className="mt-6">
+            <ChangePasswordForm />
           </TabsContent>
         </Tabs>
       </main>
