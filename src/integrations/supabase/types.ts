@@ -111,12 +111,51 @@ export type Database = {
           },
         ]
       }
+      user_profiles: {
+        Row: {
+          created_at: string | null
+          id: string
+          updated_at: string | null
+          username: string
+        }
+        Insert: {
+          created_at?: string | null
+          id: string
+          updated_at?: string | null
+          username: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          username?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      authenticate_user: {
+        Args: { p_password: string; p_username: string }
+        Returns: {
+          email: string
+          user_id: string
+        }[]
+      }
+      change_user_password: {
+        Args: { p_current_password: string; p_new_password: string }
+        Returns: boolean
+      }
+      execute_sql: {
+        Args: { sql_query: string }
+        Returns: Json
+      }
+      get_username_by_id: {
+        Args: { user_id: string }
+        Returns: string
+      }
     }
     Enums: {
       [_ in never]: never

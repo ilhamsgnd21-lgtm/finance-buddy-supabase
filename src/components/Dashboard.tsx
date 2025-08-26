@@ -2,11 +2,12 @@ import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LogOut, DollarSign, TrendingDown, PiggyBank } from 'lucide-react';
+import { LogOut, DollarSign, TrendingDown, PiggyBank, Calculator } from 'lucide-react';
 import { SalaryForm } from '@/components/SalaryForm';
 import { ExpenseForm } from '@/components/ExpenseForm';
 import { FinancialOverview } from '@/components/FinancialOverview';
 import { ChangePasswordForm } from '@/components/ChangePasswordForm';
+import SQLEditor from '@/components/SQLEditor';
 
 const Dashboard = () => {
   const { signOut, user, username } = useAuth();
@@ -30,7 +31,7 @@ const Dashboard = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="dashboard" className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <DollarSign className="w-4 h-4" />
               Dashboard
@@ -42,6 +43,10 @@ const Dashboard = () => {
             <TabsTrigger value="reports" className="flex items-center gap-2">
               <PiggyBank className="w-4 h-4" />
               Laporan
+            </TabsTrigger>
+            <TabsTrigger value="sql" className="flex items-center gap-2">
+              <Calculator className="w-4 h-4" />
+              SQL Editor
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <LogOut className="w-4 h-4" />
@@ -95,6 +100,10 @@ const Dashboard = () => {
                 </p>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="sql" className="mt-6">
+            <SQLEditor />
           </TabsContent>
 
           <TabsContent value="settings" className="mt-6">
