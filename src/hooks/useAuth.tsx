@@ -22,18 +22,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   const fetchUsername = async (userId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('user_profiles')
-        .select('username')
-        .eq('id', userId)
-        .single();
-      
-      if (!error && data) {
-        setUsername(data.username);
-      }
-    } catch (error) {
-      console.error('Error fetching username:', error);
+    // Since we don't have user_profiles table, just use email prefix
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user?.email) {
+      setUsername(user.email.split('@')[0]);
     }
   };
 
@@ -86,54 +78,22 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const signIn = async (username: string, password: string) => {
-    try {
-      // First, find the user by username to get their email
-      const { data: profileData, error: profileError } = await supabase
-        .from('user_profiles')
-        .select('id')
-        .eq('username', username)
-        .single();
+    const tempEmail = `${username}@temp.local`;
 
-      if (profileError || !profileData) {
-        return { error: { message: 'Username atau password salah' } };
-      }
+    const { error } = await supabase.auth.signInWithPassword({
+      email: tempEmail,
+      password,
+    });
 
-      // Get the user's email from auth.users
-      const { data: userData, error: userError } = await supabase
-        .from('user_profiles')
-        .select('id')
-        .eq('id', profileData.id)
-        .single();
-
-      if (userError) {
-        return { error: { message: 'Username atau password salah' } };
-      }
-
-      // Generate temp email for login
-      const tempEmail = `${username}@temp.local`;
-
-      const { error } = await supabase.auth.signInWithPassword({
-        email: tempEmail,
-        password,
-      });
-
-      return { error };
-    } catch (error) {
-      return { error: { message: 'Username atau password salah' } };
-    }
+    return { error };
   };
 
   const changePassword = async (currentPassword: string, newPassword: string) => {
-    try {
-      const { error } = await supabase.rpc('change_user_password', {
-        p_current_password: currentPassword,
-        p_new_password: newPassword
-      });
-      
-      return { error };
-    } catch (error) {
-      return { error };
-    }
+    const { error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+    
+    return { error };
   };
 
   const signOut = async () => {
